@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainMenu</class>
+ <widget class="QMainWindow" name="MainMenu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainMenu</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>游戏导引</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>欢迎大家支持京剧猫(〃'▽'〃)</string>
+     </property>
+     <addaction name="actiona_2"/>
+     <addaction name="actiona_3"/>
+    </widget>
+    <addaction name="actionban"/>
+    <addaction name="actiona"/>
+    <addaction name="menu_2"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="actiona">
+   <property name="text">
+    <string>点击白糖可开关背景音乐</string>
+   </property>
+  </action>
+  <action name="actionban">
+   <property name="text">
+    <string>版权声明在左上角</string>
+   </property>
+  </action>
+  <action name="actiona_2">
+   <property name="text">
+    <string>一分钟内连按20次上键有彩蛋哦（￣︶￣）↗</string>
+   </property>
+  </action>
+  <action name="actiona_3">
+   <property name="text">
+    <string>京剧猫upupup!!!</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
