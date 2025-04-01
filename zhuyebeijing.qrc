@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/imageone">
+    <qresource prefix="/image_forzhuye">
         <file>sucai1.png</file>
     </qresource>
 </RCC>

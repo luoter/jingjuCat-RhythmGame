@@ -52,6 +52,6 @@ MainMenu::~MainMenu()
 //背景图
 void MainMenu::paintEvent(QPaintEvent*){
     QPainter painter(this);
-    QPixmap bg(":/imageone/sucai1.png");//导入背景图*****
+    QPixmap bg(":/image_forzhuye/sucai1.png");//导入背景图*****
     painter.drawPixmap(0, 0, width(), height(), bg);
 }
