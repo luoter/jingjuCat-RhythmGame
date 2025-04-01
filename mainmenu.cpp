@@ -4,7 +4,9 @@
 #include"QPainter"
 #include"QPixmap"
 #include"QPushButton"
-#include"QMediaPlayer"
+#include"ui_levelselect.h"
+#include"levelselect.h"
+
 
 MainMenu::MainMenu(QWidget *parent)
     : QMainWindow(parent)
@@ -38,6 +40,14 @@ MainMenu::MainMenu(QWidget *parent)
     // connect(muteBtn, &QPushButton::clicked, [=](){
     //     bgmPlayer->setMuted(!bgmPlayer->isMuted());
     // });
+
+
+    //跳转选择关卡界面
+    connect(startBtn, &QPushButton::clicked, [=](){
+        LevelSelect *levelSelect = new LevelSelect();
+        levelSelect->show();
+        this->hide();
+    });
 
 
 }
