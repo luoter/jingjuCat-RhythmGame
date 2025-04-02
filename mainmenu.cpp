@@ -4,7 +4,6 @@
 #include"QPainter"
 #include"QPixmap"
 #include"QPushButton"
-#include"ui_levelselect.h"
 #include"levelselect.h"
 
 
