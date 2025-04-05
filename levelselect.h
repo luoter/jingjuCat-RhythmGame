@@ -2,7 +2,8 @@
 #define LEVELSELECT_H
 
 #include <QWidget>
-#include"gamewidget.h"
+#include"playscene.h"
+
 
 namespace Ui {
 class LevelSelect;
@@ -20,6 +21,9 @@ public:
     //重写绘图事件
     void paintEvent(QPaintEvent *);
 
+    //游戏场景的对象指针
+    PlayScene*play=NULL;
+
 
 signals:
     //自定义信号，告诉主场景，点击了返回
@@ -28,7 +32,7 @@ signals:
 
 private:
     Ui::LevelSelect *ui;
-    GameWidget *currentGame = nullptr; // 当前游戏窗口指针
+
 };
 
 #endif // LEVELSELECT_H

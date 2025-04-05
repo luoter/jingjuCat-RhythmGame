@@ -4,7 +4,7 @@
 #include"QPixmap"
 #include"QLabel"
 #include"mypushbutton.h"
-
+#include"QDebug"
 
 
 LevelSelect::LevelSelect(QWidget *parent)
@@ -17,6 +17,7 @@ LevelSelect::LevelSelect(QWidget *parent)
 
     //设置标题
     this->setWindowTitle("选择想听的歌吧Fight!!(ｏ^-^)尸~''☆ミ☆ミ");
+    this->setWindowIcon(QPixmap(":/forzhuye/picture1/jingjulogo4.png"));
 
     //返回按钮
     MyPushButton*backBtn=new MyPushButton(":/forselect/picture1/back5.png");
@@ -39,6 +40,41 @@ LevelSelect::LevelSelect(QWidget *parent)
     leveltweBtn->setParent(this);
     leveltweBtn->move(this->width()*0.66,this->height()*0.6);
 
+    //监视关卡的点击
+    connect(leveloneBtn,&MyPushButton::clicked,[=](){
+        // qDebug()<<"选择第一关";
+
+    //进入游戏场景
+        this->hide();
+        play=new PlayScene(1);
+        play->show();
+
+        //点击返回
+        connect(play,&PlayScene::playSceneBack,this,[=](){
+            this->show();
+            delete play;
+            play=NULL;
+        });
+
+
+
+    });
+
+    connect(leveltweBtn,&MyPushButton::clicked,[=](){
+        // qDebug()<<"选择第二关";
+        //进入游戏场景
+        this->hide();
+        play=new PlayScene(2);
+        play->show();
+
+        //点击返回
+        connect(play,&PlayScene::playSceneBack,this,[=](){
+            this->show();
+            delete play;
+            play=NULL;
+        });
+
+    });
 
 
 
@@ -63,11 +99,6 @@ void LevelSelect::paintEvent(QPaintEvent *){
 
 
 
-//关卡选择，后弹出窗口
-// void LevelSelect::startGame(int level) {
-//     GameWidget *game = new GameWidget(level);
-//     game->show();
-//     this->hide();
-// }
+
 
 

@@ -4,12 +4,23 @@
         <file>picture1/begin3.png</file>
         <file>picture1/jingyin12.png</file>
         <file>picture1/jingyin22.png</file>
+        <file>picture1/jingjulogo4.png</file>
+        <file>picture1/jingyin13.png</file>
+        <file>picture1/jingyin23.png</file>
     </qresource>
     <qresource prefix="/forselect">
         <file>picture1/guanqia.png</file>
         <file>picture1/back5.png</file>
-        <file>picture1/level22.png</file>
         <file>picture1/level14.png</file>
         <file>picture1/level23.png</file>
     </qresource>
+    <qresource prefix="/forplayscene">
+        <file>picture1/gameground.png</file>
+        <file>picture1/track1.png</file>
+        <file>picture1/track2.png</file>
+    </qresource>
+    <qresource prefix="/sound">
+        <file>picture1/shiyan.wav</file>
+    </qresource>
+    <qresource prefix="/arrow"/>
 </RCC>
