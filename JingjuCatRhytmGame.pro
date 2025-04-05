@@ -15,18 +15,21 @@ SOURCES += \
     gamewidget.cpp \
     levelselect.cpp \
     main.cpp \
-    mainmenu.cpp
+    mainmenu.cpp \
+    mypushbutton.cpp
 
 
 
 HEADERS += \
     gamewidget.h \
     levelselect.h \
-    mainmenu.h
+    mainmenu.h \
+    mypushbutton.h
 
 
 
 FORMS += \
+    gamewidget.ui \
     levelselect.ui \
     mainmenu.ui
 
@@ -39,4 +42,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     zhuyebeijing.qrc \
+
+DISTFILES +=
 

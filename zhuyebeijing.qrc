@@ -1,5 +1,15 @@
 <RCC>
-    <qresource prefix="/image_forzhuye">
-        <file>sucai1.png</file>
+    <qresource prefix="/forzhuye">
+        <file>picture1/zhuyebeijing.png</file>
+        <file>picture1/begin3.png</file>
+        <file>picture1/jingyin12.png</file>
+        <file>picture1/jingyin22.png</file>
+    </qresource>
+    <qresource prefix="/forselect">
+        <file>picture1/guanqia.png</file>
+        <file>picture1/back5.png</file>
+        <file>picture1/level22.png</file>
+        <file>picture1/level14.png</file>
+        <file>picture1/level23.png</file>
     </qresource>
 </RCC>
