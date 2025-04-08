@@ -2,8 +2,6 @@
     <qresource prefix="/forzhuye">
         <file>picture1/zhuyebeijing.png</file>
         <file>picture1/begin3.png</file>
-        <file>picture1/jingyin12.png</file>
-        <file>picture1/jingyin22.png</file>
         <file>picture1/jingjulogo4.png</file>
         <file>picture1/jingyin13.png</file>
         <file>picture1/jingyin23.png</file>
@@ -16,11 +14,22 @@
     </qresource>
     <qresource prefix="/forplayscene">
         <file>picture1/gameground.png</file>
-        <file>picture1/track1.png</file>
         <file>picture1/track2.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>picture1/shiyan.wav</file>
+        <file>picture1/jingjumao.mp3</file>
+        <file>picture1/piaodang.mp3</file>
+        <file>picture1/xiaoyugan.mp3</file>
     </qresource>
-    <qresource prefix="/arrow"/>
+    <qresource prefix="/arrow">
+        <file>picture1/arrowdown2.png</file>
+        <file>picture1/arrowleft2.png</file>
+        <file>picture1/arrowright2.png</file>
+        <file>picture1/arrowup2.png</file>
+        <file>picture1/arrowb.png</file>
+        <file>picture1/arrow13.png</file>
+        <file>picture1/arrowb2.png</file>
+        <file>picture1/1.png</file>
+    </qresource>
 </RCC>

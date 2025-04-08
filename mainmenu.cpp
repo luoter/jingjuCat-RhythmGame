@@ -38,45 +38,42 @@ MainMenu::MainMenu(QWidget *parent)
     startBtn->move(this->width()*0.7,this->height()*0.3);
 
 
-    // // 音乐播放器
-    // QMediaPlayer *player = new QMediaPlayer(this);
-    // QAudioOutput*outPut=new QAudioOutput(this);
-    // player->setAudioOutput(outPut);
-    // player->setSource(QUrl("qrc:/sound/picture1/shiyan.wav"));//添加背景音乐
-    // outPut->setVolume(200);
-    // player->play();
-    // QPushButton*muteBtn=NULL;
-    // connect(muteBtn,&QPushButton::clicked,[=](){
 
-    //     outPut->setMuted(!outPut->isMuted());
-    //     muteBtn->setIcon(QIcon(!outPut->isMuted()
-    //         ?":/forzhuye/picture1/jingyin22.png"
-    //         :":/forzhuye/picture1/jingyin12.png"));
-    // });
     setupMusicControls();
-
-
 
 
     LevelSelect*levelselect=new LevelSelect;
 
 
+
     //延时跳转选择关卡界面
     connect(startBtn, &MyPushButton::clicked, [=](){
 
-        audioOutput->setMuted(isMusicMuted);
+        bool m_isMusicMuted=isMusicMuted;
 
-    //点击返回后操作
-    connect(levelselect,&LevelSelect::levelSelectBack,this,[=](){
-        this->show();
+        m_isMusicMuted=true;//设为静音
+        audioOutput->setMuted(m_isMusicMuted);
+
+        //点击返回后操作
+        connect(levelselect,&LevelSelect::levelSelectBack,this,[=](){
+
         levelselect->hide();
 
+            QTimer::singleShot(500,this,[=](){
 
-    });
+                this->show();
 
-        QTimer::singleShot(200,this,[=](){
+                //解除静音
+                audioOutput->setMuted(isMusicMuted);
+            });
+
+        });
+
+        this->hide();
+
+        QTimer::singleShot(500,this,[=](){
+
             levelselect->show();
-            this->hide();
 
         });
 
@@ -105,8 +102,10 @@ void MainMenu::setupMusicControls()
     // 创建播放器
     bgmPlayer = new QMediaPlayer(this);
     bgmPlayer->setAudioOutput(audioOutput);
-    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/shiyan.wav"));//音频更改
-    audioOutput->setVolume(50);  // 初始音量
+     audioOutput->setVolume(30);  // 初始音量
+    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/xiaoyugan.mp3"));//音频更改
+
+
 
     // 创建静音按钮
     muteBtn = new QPushButton(this);
@@ -134,6 +133,7 @@ void MainMenu::setupMusicControls()
 
 void MainMenu::toggleMusic()
 {
+    //改变静音bool值
     isMusicMuted = !isMusicMuted;
 
     // 静音控制

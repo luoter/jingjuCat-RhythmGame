@@ -41,12 +41,11 @@ LevelSelect::LevelSelect(QWidget *parent)
     leveltweBtn->move(this->width()*0.66,this->height()*0.6);
 
     //监视关卡的点击
-    connect(leveloneBtn,&MyPushButton::clicked,[=](){
-        // qDebug()<<"选择第一关";
-
-    //进入游戏场景
+    connect(leveloneBtn,&MyPushButton::clicked,[=]()
+    {
+        //进入游戏场景
         this->hide();
-        play=new PlayScene(1);
+        play=new PlayScene(1);//游戏场景的对象指针
         play->show();
 
         //点击返回
@@ -56,12 +55,11 @@ LevelSelect::LevelSelect(QWidget *parent)
             play=NULL;
         });
 
-
-
     });
 
-    connect(leveltweBtn,&MyPushButton::clicked,[=](){
-        // qDebug()<<"选择第二关";
+    connect(leveltweBtn,&MyPushButton::clicked,[=]()
+    {
+
         //进入游戏场景
         this->hide();
         play=new PlayScene(2);

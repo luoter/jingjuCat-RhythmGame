@@ -31,6 +31,7 @@ private:
 
     void setupMusicControls();
 
+    //成员变量
     QMediaPlayer *bgmPlayer;
     QAudioOutput *audioOutput;
     QPushButton *muteBtn;

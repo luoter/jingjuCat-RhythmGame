@@ -54,7 +54,7 @@
   </action>
   <action name="actionban">
    <property name="text">
-    <string>版权声明在左上角</string>
+    <string>版权声明在右下角</string>
    </property>
   </action>
   <action name="actiona_2">
