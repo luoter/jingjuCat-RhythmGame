@@ -53,6 +53,9 @@ LevelSelect::LevelSelect(QWidget *parent)
             this->show();
             delete play;
             play=NULL;
+
+
+
         });
 
     });

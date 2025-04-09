@@ -15,6 +15,7 @@
     <qresource prefix="/forplayscene">
         <file>picture1/gameground.png</file>
         <file>picture1/track2.png</file>
+        <file>picture1/finish2.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>picture1/shiyan.wav</file>
@@ -23,13 +24,10 @@
         <file>picture1/xiaoyugan.mp3</file>
     </qresource>
     <qresource prefix="/arrow">
-        <file>picture1/arrowdown2.png</file>
-        <file>picture1/arrowleft2.png</file>
-        <file>picture1/arrowright2.png</file>
-        <file>picture1/arrowup2.png</file>
-        <file>picture1/arrowb.png</file>
-        <file>picture1/arrow13.png</file>
-        <file>picture1/arrowb2.png</file>
-        <file>picture1/1.png</file>
+        <file>picture1/arrowfail.png</file>
+        <file>picture1/arrowfour.png</file>
+        <file>picture1/arrowone.png</file>
+        <file>picture1/arrowthree.png</file>
+        <file>picture1/arrowtwe.png</file>
     </qresource>
 </RCC>

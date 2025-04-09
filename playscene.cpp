@@ -10,6 +10,7 @@
 #include<QKeyEvent>
 #include<mainmenu.h>
 #include<qmediaplayer.h>
+#include<QPropertyAnimation>
 
 PlayScene::PlayScene(int levelnum)
 {
@@ -46,6 +47,29 @@ PlayScene::PlayScene(int levelnum)
 
     }
 
+    //结束图片
+    QLabel*finishLabel=new QLabel;
+    //防置阻碍鼠标事件
+    finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    QPixmap finishPix;
+    finishPix.load(":/forplayscene/picture1/finish2.png");
+    finishLabel->setGeometry(0,0,finishPix.width(),finishPix.height());
+    finishLabel->setPixmap(finishPix);//不能将finishPix设为指针，因为这个函数要求const参数
+    finishLabel->setParent(this);
+    finishLabel->move((this->width()-finishPix.width())*0.5,-finishPix.height());
+
+
+
+    //结束后出现结束图片
+    QPropertyAnimation*finish=new QPropertyAnimation(finishLabel,"geometry");
+    //设置间隔
+    finish->setDuration(2000);
+    //开始位置
+    finish->setStartValue(QRect(finishLabel->x(),finishLabel->y(),finishLabel->width(),finishLabel->height()));
+    //结束位置
+    finish->setEndValue(QRect(finishLabel->x(),finishLabel->y()+600,finishLabel->width(),finishLabel->height()));
+    //设置缓和曲线
+    finish->setEasingCurve(QEasingCurve::OutCubic);
 
 
 
@@ -53,7 +77,7 @@ PlayScene::PlayScene(int levelnum)
     m_unifiedTimer = new QTimer(this);
     connect(m_unifiedTimer, &QTimer::timeout, this, &PlayScene::moveAllArrows);
 
-    m_unifiedTimer->start(10);//定时器，每0.01秒箭头移动
+    m_unifiedTimer->start(16);//定时器，每0.01秒箭头移动
 
     //设置键盘事件
     // 设置窗口可接收键盘事件
@@ -70,36 +94,25 @@ PlayScene::PlayScene(int levelnum)
         // 随机生成方向和轨道
         createArrow(rand()%4 );
     });
-    testTimer->start(450);  // 间隔0.45秒
+    testTimer->start(700);  // 间隔0.7秒
 
 
+
+
+
+    //进入关卡1
     if(levelIndex==1){
         //设置标题
         this->setWindowTitle("《京剧猫》，加油( ´ ▽ ` )ノ");
 
-        }
 
-        if(levelIndex==2){
-            //设置标题
-            this->setWindowTitle("《飘荡》，你可以的┐(￣ヮ￣)┌");
-        }
+        //停止生成
+        QTimer*jishi=new QTimer(this);
+        jishi->start(165000);
 
 
 
-    //音乐有关
-    setBackMusic();
-
-
-    //停止生成
-
-
-    QTimer*jishi=new QTimer(this);
-    jishi->start(5000);
-
-
-    connect(jishi,&QTimer::timeout,[=](){
-
-
+        connect(jishi,&QTimer::timeout,[=](){
 
             stopTimer=new QTimer(this);
             stopTimer->setSingleShot(true);
@@ -109,17 +122,73 @@ PlayScene::PlayScene(int levelnum)
                 // m_unifiedTimer->stop();
 
                 qDebug()<<"停止生成箭头";
+
             });
 
             jishi->stop();
 
-    });
+            //结束动画
+            finish->start();
+
+            connect(finish, &QPropertyAnimation::finished, [=]() {
+                m_isAnimationFinished = true;    // 标记动画完成
+                finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
+                qDebug() << "动画结束，可点击返回";
+            });
+
+        });
+
+        }
+
+        //关卡二
+        if(levelIndex==2){
+            //设置标题
+            this->setWindowTitle("《飘荡》，你可以的┐(￣ヮ￣)┌");
+
+
+            //停止生成，不知道为什么duration 用不了，只能用定时器了
+            QTimer*jishi=new QTimer(this);
+            jishi->start(135000);
+
+
+            connect(jishi,&QTimer::timeout,[=](){
+
+
+
+                stopTimer=new QTimer(this);
+                stopTimer->setSingleShot(true);
+                stopTimer->start();
+                connect(stopTimer,&QTimer::timeout,[=](){
+                    testTimer->stop();
+                    // m_unifiedTimer->stop();
+
+                    qDebug()<<"停止生成箭头";
+
+                });
+
+                jishi->stop();
+
+                //结束动画
+                finish->start();
+
+                connect(finish, &QPropertyAnimation::finished, [=]() {
+                    m_isAnimationFinished = true;    // 标记动画完成
+                    finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
+                    qDebug() << "动画结束，可点击返回";
+                });
+
+            });
 
 
 
 
 
-        musicPlayer->play();
+        }
+
+
+
+    //音乐有关
+    setBackMusic();
 
 
 }
@@ -156,11 +225,11 @@ void PlayScene::setBackMusic(){
     musicPlayer->setSource(QUrl(musicPath));
     audioOutput->setVolume(30);
 
-
+    musicPlayer->play();
 
 }
 
-//新的析构函数
+//析构函数
 PlayScene::~PlayScene() {
     if(testTimer) {
         testTimer->stop();
@@ -190,7 +259,7 @@ void PlayScene::moveAllArrows()
 
     }
 
-    // 自动清理无效指针
+    // 自动清理无效指针？？
     m_activeArrows.erase(
         std::remove_if(m_activeArrows.begin(), m_activeArrows.end(),
         [](MyArrow* arrow) { return !arrow || !arrow->isVisible(); }),
@@ -271,7 +340,7 @@ void PlayScene::checkCollision(int track)
 }
 
 
-//命中处理
+//命中
 void PlayScene::handleHit(MyArrow *arrow)
 {
     arrow->deactivate();
@@ -285,10 +354,11 @@ void PlayScene::handleHit(MyArrow *arrow)
     qDebug() << "Perfect hit! Current score:" << m_score;
 }
 
-// 未命中处理
+// 未命中
 void PlayScene::handleMiss(MyArrow *arrow)
 {
     m_score = qMax(0, m_score - 200);
+    // countFail++;
 
     if(arrow->y()<m_judgelineY){
 
@@ -322,29 +392,37 @@ void PlayScene::createTestPattern()
     srand(time(nullptr));
 
     // 轨道0
-    QTimer::singleShot(500, [=](){ createArrow(0); });
-    QTimer::singleShot(800, [=](){ createArrow(0); });
+    QTimer::singleShot(3500, [=](){ createArrow(0); });
+    QTimer::singleShot(10000, [=](){ createArrow(0); });
 
     QTimer::singleShot(rand()%4000+1000, [=](){ createArrow(0); });
 
     // 轨道1
     for(int i=0; i<3; i++) {
-        QTimer::singleShot(4000 + i*100, [=](){ createArrow(1); });
+        QTimer::singleShot(9000 + i*100, [=](){ createArrow(1); });
 
     }
-    QTimer::singleShot(rand()%2000, [=](){ createArrow(1); });
+    QTimer::singleShot(rand()%4000, [=](){ createArrow(1); });
 
     // 轨道2
     QTimer::singleShot(1900, [=](){ createArrow(2); });
-    QTimer::singleShot(1300, [=](){ createArrow(2); });
+    QTimer::singleShot(10300, [=](){ createArrow(2); });
 
     QTimer::singleShot(rand()%1000+1000, [=](){ createArrow(2); });
 
     // 轨道3
-    QTimer::singleShot(1000, [=](){ createArrow(3); });
+    QTimer::singleShot(3500, [=](){ createArrow(3); });
 
     QTimer::singleShot(rand()%4000+500, [=](){ createArrow(3); });
 }
+
+void PlayScene::mousePressEvent(QMouseEvent *event) {
+    if (m_isAnimationFinished) {
+        emit playSceneBack();  // 触发返回信号
+    }
+    QWidget::mousePressEvent(event);
+}
+
 
 
 

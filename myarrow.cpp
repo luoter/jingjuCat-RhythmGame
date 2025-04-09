@@ -15,21 +15,21 @@ MyArrow::MyArrow(Direction dir,int track,QWidget*parent)
     QString imgPath;
     switch(dir){
     case(U):
-        imgPath=":/arrow/picture1/1.png";
+        imgPath=":/arrow/picture1/arrowone.png";
         break;
     case(D):
-        imgPath=":/arrow/picture1/arrowb2.png";
+        imgPath=":/arrow/picture1/arrowtwe.png";
         break;
     case(L):
-        imgPath=":/arrow/picture1/arrowleft2.png";
+        imgPath=":/arrow/picture1/arrowthree.png";
         break;
     case(R):
-        imgPath=":/arrow/picture1/arrowright2.png";
+        imgPath=":/arrow/picture1/arrowfour.png";
         break;
     }
 
     //更改箭头大小
-    setPixmap(QPixmap(imgPath).scaled(30,30,Qt::KeepAspectRatio));
+    setPixmap(QPixmap(imgPath).scaled(40,40,Qt::KeepAspectRatio));
     setAlignment(Qt::AlignCenter);
 
 
@@ -89,7 +89,7 @@ void MyArrow::moveStep(int speed)
 void MyArrow::setFailed() {
     m_isFailed = true;
 
-    setPixmap(QPixmap(":/arrow/picture1/arrowup2.png").scaled(100,100,Qt::KeepAspectRatio));
+    setPixmap(QPixmap(":/arrow/picture1/arrowfail.png").scaled(45,45,Qt::KeepAspectRatio));
 }
 
 

@@ -24,6 +24,7 @@ public:
 
     // 分数系统
     int m_score = 0;
+    // int countFail=0;
 
 
 
@@ -37,15 +38,33 @@ signals:
 
 private:
 
+    //游戏音乐
+    void setBackMusic();
+    QMediaPlayer*musicPlayer=nullptr;
+
+    // 标记动画是否完成
+    bool m_isAnimationFinished = false;
+
+
      // 统一定时器
     QTimer *m_unifiedTimer;
+
     QTimer*testTimer;
+
+    //箭头生成停计时器
+    QTimer*stopTimer=nullptr;
 
     int m_moveSpeed = 5; // 全局移动速度，后期更改，两首歌不一样
 
     // 箭头存储用QList
     QList<MyArrow*> m_activeArrows;
     //
+
+
+    //鼠标点击事件重写
+    void mousePressEvent(QMouseEvent*);
+
+
 
     void moveAllArrows();//移动箭头
 
@@ -86,16 +105,8 @@ private:
 
 
 
-    //下一阶段
-    //游戏音乐
-    void setBackMusic();
-    QMediaPlayer*musicPlayer=nullptr;
 
-    //结算界面
-    QWidget*resultWidget=nullptr;
 
-    //停计时器
-    QTimer*stopTimer=nullptr;
 
 
 
