@@ -22,7 +22,8 @@ SOURCES += \
     mainmenu.cpp \
     myarrow.cpp \
     mypushbutton.cpp \
-    playscene.cpp
+    playscene.cpp \
+    surprise.cpp
 
 
 
@@ -31,7 +32,8 @@ HEADERS += \
     mainmenu.h \
     myarrow.h \
     mypushbutton.h \
-    playscene.h
+    playscene.h \
+    surprise.h
 
 
 

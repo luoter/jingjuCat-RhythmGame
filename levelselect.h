@@ -33,6 +33,13 @@ signals:
 private:
     Ui::LevelSelect *ui;
 
+    void musicPlay();
+
+
+    //成员变量
+    QMediaPlayer *bgmPlayer2;
+    QAudioOutput *audioOutput2;
+
 };
 
 #endif // LEVELSELECT_H

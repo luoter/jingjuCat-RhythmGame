@@ -42,6 +42,11 @@ private:
     void setBackMusic();
     QMediaPlayer*musicPlayer=nullptr;
 
+    //结束音乐
+    void finishMusic();
+    QMediaPlayer*finishPlayer=nullptr;
+
+
     // 标记动画是否完成
     bool m_isAnimationFinished = false;
 

@@ -16,12 +16,16 @@
         <file>picture1/gameground.png</file>
         <file>picture1/track2.png</file>
         <file>picture1/finish2.png</file>
+        <file>picture1/finish3.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>picture1/shiyan.wav</file>
         <file>picture1/jingjumao.mp3</file>
         <file>picture1/piaodang.mp3</file>
         <file>picture1/xiaoyugan.mp3</file>
+        <file>picture1/yugan.mp3</file>
+        <file>picture1/qiaoluo.mp3</file>
+        <file>picture1/kaichang.mp3</file>
     </qresource>
     <qresource prefix="/arrow">
         <file>picture1/arrowfail.png</file>
@@ -29,5 +33,36 @@
         <file>picture1/arrowone.png</file>
         <file>picture1/arrowthree.png</file>
         <file>picture1/arrowtwe.png</file>
+    </qresource>
+    <qresource prefix="/surprise">
+        <file>surprise/0.png</file>
+        <file>surprise/1.png</file>
+        <file>surprise/2.png</file>
+        <file>surprise/3.png</file>
+        <file>surprise/4.png</file>
+        <file>surprise/5.png</file>
+        <file>surprise/6.png</file>
+        <file>surprise/7.png</file>
+        <file>surprise/8.png</file>
+        <file>surprise/9.png</file>
+        <file>surprise/10.png</file>
+        <file>surprise/11.png</file>
+        <file>surprise/12.png</file>
+        <file>surprise/13.png</file>
+        <file>surprise/14.png</file>
+        <file>surprise/15.png</file>
+        <file>surprise/16.png</file>
+        <file>surprise/17.png</file>
+        <file>surprise/18.png</file>
+        <file>surprise/20.png</file>
+        <file>surprise/21.png</file>
+        <file>surprise/22.png</file>
+        <file>surprise/23.png</file>
+        <file>surprise/24.png</file>
+        <file>surprise/25.png</file>
+        <file>surprise/26.png</file>
+        <file>surprise/27.png</file>
+        <file>surprise/28.png</file>
+        <file>picture1/IMG_20250412_212658.png</file>
     </qresource>
 </RCC>

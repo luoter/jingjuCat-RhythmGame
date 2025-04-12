@@ -18,7 +18,7 @@ PlayScene::PlayScene(int levelnum)
     this->levelIndex=levelnum;
 
 
-    //初始化游戏场景
+
     //设置初始大小
     this->setFixedSize(800,600);
 
@@ -52,7 +52,7 @@ PlayScene::PlayScene(int levelnum)
     //防置阻碍鼠标事件
     finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     QPixmap finishPix;
-    finishPix.load(":/forplayscene/picture1/finish2.png");
+    finishPix.load(":/forplayscene/picture1/finish3.png");
     finishLabel->setGeometry(0,0,finishPix.width(),finishPix.height());
     finishLabel->setPixmap(finishPix);//不能将finishPix设为指针，因为这个函数要求const参数
     finishLabel->setParent(this);
@@ -63,7 +63,7 @@ PlayScene::PlayScene(int levelnum)
     //结束后出现结束图片
     QPropertyAnimation*finish=new QPropertyAnimation(finishLabel,"geometry");
     //设置间隔
-    finish->setDuration(2000);
+    finish->setDuration(3000);
     //开始位置
     finish->setStartValue(QRect(finishLabel->x(),finishLabel->y(),finishLabel->width(),finishLabel->height()));
     //结束位置
@@ -73,29 +73,26 @@ PlayScene::PlayScene(int levelnum)
 
 
 
-    // 统一定时器初始化**********************
+    // 统一定时器初始化
     m_unifiedTimer = new QTimer(this);
     connect(m_unifiedTimer, &QTimer::timeout, this, &PlayScene::moveAllArrows);
 
     m_unifiedTimer->start(16);//定时器，每0.01秒箭头移动
 
-    //设置键盘事件
-    // 设置窗口可接收键盘事件
+
+
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFocus();  // 获取焦点
-
 
 
 
     // 测试代码：每秒生成随机箭头
     testTimer = new QTimer(this);
     connect(testTimer, &QTimer::timeout, [=](){
-        // srand(time(NULL));
+        srand(time(NULL));
         // 随机生成方向和轨道
         createArrow(rand()%4 );
     });
-    testTimer->start(700);  // 间隔0.7秒
-
 
 
 
@@ -105,12 +102,11 @@ PlayScene::PlayScene(int levelnum)
         //设置标题
         this->setWindowTitle("《京剧猫》，加油( ´ ▽ ` )ノ");
 
+        testTimer->start(500);  // 间隔0.5秒
 
         //停止生成
         QTimer*jishi=new QTimer(this);
         jishi->start(165000);
-
-
 
         connect(jishi,&QTimer::timeout,[=](){
 
@@ -127,14 +123,26 @@ PlayScene::PlayScene(int levelnum)
 
             jishi->stop();
 
-            //结束动画
-            finish->start();
+            //播放音效
+            finishMusic();
 
-            connect(finish, &QPropertyAnimation::finished, [=]() {
-                m_isAnimationFinished = true;    // 标记动画完成
-                finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
-                qDebug() << "动画结束，可点击返回";
+            QTimer::singleShot(3000,this,[=](){
+
+                //结束动画
+                finish->start();
+
+                this->setWindowTitle("加油加油加油！！！");
+
+                connect(finish, &QPropertyAnimation::finished, [=]() {
+                    m_isAnimationFinished = true;    // 标记动画完成
+                    finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
+                    qDebug() << "动画结束，可点击返回";
+
+                });
+
+
             });
+
 
         });
 
@@ -145,15 +153,13 @@ PlayScene::PlayScene(int levelnum)
             //设置标题
             this->setWindowTitle("《飘荡》，你可以的┐(￣ヮ￣)┌");
 
+            testTimer->start(600);  // 间隔0.6秒
 
             //停止生成，不知道为什么duration 用不了，只能用定时器了
             QTimer*jishi=new QTimer(this);
             jishi->start(135000);
 
-
             connect(jishi,&QTimer::timeout,[=](){
-
-
 
                 stopTimer=new QTimer(this);
                 stopTimer->setSingleShot(true);
@@ -168,26 +174,32 @@ PlayScene::PlayScene(int levelnum)
 
                 jishi->stop();
 
-                //结束动画
-                finish->start();
+                //播放音效
+                finishMusic();
 
-                connect(finish, &QPropertyAnimation::finished, [=]() {
-                    m_isAnimationFinished = true;    // 标记动画完成
-                    finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
-                    qDebug() << "动画结束，可点击返回";
+                QTimer::singleShot(3000,this,[=](){//延时出现
+
+                    //结束动画
+                    finish->start();
+                    this->setWindowTitle("加油加油加油！！！");
+
+
+                    connect(finish, &QPropertyAnimation::finished, [=]() {
+                        m_isAnimationFinished = true;    // 标记动画完成
+                        finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
+                        qDebug() << "动画结束，可点击返回";
+                        // finishPlayer->stop();
+                    });
+
                 });
 
             });
-
-
-
-
 
         }
 
 
 
-    //音乐有关
+    //背景音乐有关
     setBackMusic();
 
 
@@ -229,6 +241,25 @@ void PlayScene::setBackMusic(){
 
 }
 
+void PlayScene::finishMusic(){
+
+    finishPlayer=new QMediaPlayer(this);
+    QAudioOutput*finishOutput=new QAudioOutput(this);
+    finishPlayer->setAudioOutput(finishOutput);
+
+    finishPlayer->setSource(QUrl("qrc:/sound/picture1/kaichang.mp3"));
+    finishOutput->setVolume(30);
+
+    //不用循环
+    // connect(finishPlayer, &QMediaPlayer::playbackStateChanged, [this](){
+    //     if(finishPlayer->playbackState() == QMediaPlayer::StoppedState) {
+    //         finishPlayer->play();
+    //     }
+    // });
+
+    finishPlayer->play();
+}
+
 //析构函数
 PlayScene::~PlayScene() {
     if(testTimer) {
@@ -253,6 +284,7 @@ void PlayScene::moveAllArrows()
         if (arrow->isActive() && arrow->y() > m_judgelineY +1) {
 
             arrow->deactivate();
+            m_score-=300;
 
         }
 
@@ -306,9 +338,6 @@ void PlayScene::createArrow(int track)
 
     checkCollision(track);
 }
-
-
-
 
 
 
@@ -416,8 +445,12 @@ void PlayScene::createTestPattern()
     QTimer::singleShot(rand()%4000+500, [=](){ createArrow(3); });
 }
 
+
+//动画结束后点击鼠标返回关卡选择页面
 void PlayScene::mousePressEvent(QMouseEvent *event) {
+
     if (m_isAnimationFinished) {
+
         emit playSceneBack();  // 触发返回信号
     }
     QWidget::mousePressEvent(event);
@@ -426,13 +459,5 @@ void PlayScene::mousePressEvent(QMouseEvent *event) {
 
 
 
-//音乐播放
-// void PlayScene::startGame(int levelnum) {
-//     // 音乐播放器初始化
-//     m_musicPlayer = new QMediaPlayer(this);
-//     QAudioOutput *audioOutput = new QAudioOutput(this);
-//     m_musicPlayer->setAudioOutput(audioOutput);
-//     m_musicPlayer->setSource(QUrl("qrc:/music/game.mp3"));
-//     m_musicPlayer->play();
-// }
+
 

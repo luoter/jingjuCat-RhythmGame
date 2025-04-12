@@ -5,11 +5,13 @@
 #include"QPixmap"
 #include"QPushButton"
 #include"levelselect.h"
+#include"surprise.h"
 #include"QTimer"
 #include"mypushbutton.h"
 #include"QMediaPlayer"
 #include"QAudioOutput"
 #include <QIcon>
+#include<QKeyEvent>
 
 
 MainMenu::MainMenu(QWidget *parent)
@@ -28,7 +30,8 @@ MainMenu::MainMenu(QWidget *parent)
 
     this->setWindowIcon(QPixmap(":/forzhuye/picture1/jingjulogo4.png"));
 
-
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocus();  // 获取焦点，为了获取按键事件
 
 
     //开始按钮设置//需要更改
@@ -37,22 +40,27 @@ MainMenu::MainMenu(QWidget *parent)
     startBtn->setParent(this);
     startBtn->move(this->width()*0.7,this->height()*0.3);
 
-
+    startBtn->setFocusPolicy(Qt::NoFocus); // 禁止按钮获取焦点
 
     setupMusicControls();
 
 
-    LevelSelect*levelselect=new LevelSelect;
 
 
 
     //延时跳转选择关卡界面
     connect(startBtn, &MyPushButton::clicked, [=](){
 
+        //要在点了按钮之后生成
+        LevelSelect*levelselect=new LevelSelect;
+
+
         bool m_isMusicMuted=isMusicMuted;
 
         m_isMusicMuted=true;//设为静音
         audioOutput->setMuted(m_isMusicMuted);
+
+        this->setFocus();
 
         //点击返回后操作
         connect(levelselect,&LevelSelect::levelSelectBack,this,[=](){
@@ -80,6 +88,8 @@ MainMenu::MainMenu(QWidget *parent)
     });
 
 
+
+
 }
 
 //
@@ -102,14 +112,15 @@ void MainMenu::setupMusicControls()
     // 创建播放器
     bgmPlayer = new QMediaPlayer(this);
     bgmPlayer->setAudioOutput(audioOutput);
-     audioOutput->setVolume(30);  // 初始音量
-    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/xiaoyugan.mp3"));//音频更改
+    audioOutput->setVolume(30);  // 初始音量
+    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/yugan.mp3"));//音频
 
 
 
     // 创建静音按钮
     muteBtn = new QPushButton(this);
     muteBtn->setObjectName("muteBtn");
+    muteBtn->setFocusPolicy(Qt::NoFocus);
 
     // 设置按钮属性
     muteBtn->setGeometry(20, 40, 40, 40);  // 左上角位置
@@ -143,11 +154,37 @@ void MainMenu::toggleMusic()
     muteBtn->setIcon(isMusicMuted
         ? QIcon(":/forzhuye/picture1/jingyin23.png")
         :  QIcon(":/forzhuye/picture1/jingyin13.png"));
+
+    this->setFocus();
 }
 
 MainMenu::~MainMenu()
 {
     bgmPlayer->stop();
     delete bgmPlayer;  // 父对象会自动删除，但显式释放更安全
+}
+
+void MainMenu::keyPressEvent(QKeyEvent*event){
+
+ qDebug() << "Pressed key:" << event->key(); // 调试输出
+     //跳转彩蛋界面
+    if(event->key()==Qt::Key_Up){
+
+        Surprise*surprise=new Surprise();
+
+        this->hide();
+
+        surprise->show();
+
+        connect(surprise,&Surprise::surpriseBack,this,[=](){
+
+            surprise->hide();
+            this->show();
+            surprise->deleteLater();
+
+        });
+
+    }
+    QMainWindow::keyPressEvent(event);
 }
 

@@ -59,7 +59,7 @@
   </action>
   <action name="actiona_2">
    <property name="text">
-    <string>一分钟内连按20次上键有彩蛋哦（￣︶￣）↗</string>
+    <string>按上键有彩蛋哦（￣︶￣）↗</string>
    </property>
   </action>
   <action name="actiona_3">

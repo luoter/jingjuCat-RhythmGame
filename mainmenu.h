@@ -26,6 +26,8 @@ public:
 private slots:
     void toggleMusic();
 
+
+
 private:
     Ui::MainMenu *ui;
 
@@ -36,6 +38,8 @@ private:
     QAudioOutput *audioOutput;
     QPushButton *muteBtn;
     bool isMusicMuted = false;
+
+    void keyPressEvent(QKeyEvent*enevt)override ;
 
 };
 #endif // MAINMENU_H
