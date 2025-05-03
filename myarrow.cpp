@@ -33,29 +33,12 @@ MyArrow::MyArrow(Direction dir,int track,QWidget*parent)
     setAlignment(Qt::AlignCenter);
 
 
-
-    // // 加上阴影，区分重叠箭头
-    // QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-    // shadow->setBlurRadius(10);
-    // shadow->setColor(Qt::yellow);
-    // shadow->setOffset(2, 2);
-    // setGraphicsEffect(shadow);
-    // 确保新箭头显示在最上层
-    // setAttribute(Qt::WA_TranslucentBackground);
-    // raise();
-
-
 }
 
 
 // 开始移动方法
 void MyArrow::startMove()
 {
-    // // 计算初始X坐标：轨道中心 - 箭头宽度/2  - width()/2
-    // int initX = 400;
-
-    // // 设置初始位置在屏幕上方
-    // move(initX, 75);
 
     // 初始化位置逻辑，箭头x坐标=100（最左轨道x坐标）+轨道宽度*轨道号（0,1,2,3）+轨道宽一半-箭头宽一半
     const int trackWidth = 150;

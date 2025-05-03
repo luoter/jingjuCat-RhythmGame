@@ -19,16 +19,7 @@ public:
 
     int m_judgelineY=400;//判断线
 
-    // // 四个轨道的中心X坐标（从左到右0-3）
-    //     int m_trackPositions[4] = {175,325,475,625};
-
-    // 分数系统
-    int m_score = 0;
-    // int countFail=0;
-
-
-
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*)override;
 
 signals:
 
@@ -59,17 +50,13 @@ private:
     //箭头生成停计时器
     QTimer*stopTimer=nullptr;
 
-    int m_moveSpeed = 5; // 全局移动速度，后期更改，两首歌不一样
+    int m_moveSpeed = 5;
 
     // 箭头存储用QList
     QList<MyArrow*> m_activeArrows;
-    //
-
 
     //鼠标点击事件重写
-    void mousePressEvent(QMouseEvent*);
-
-
+    void mousePressEvent(QMouseEvent*)override;
 
     void moveAllArrows();//移动箭头
 
@@ -89,7 +76,7 @@ private:
         {Qt::Key_Right, 3}   // 右键对应轨道3
     };
 
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event)override;
 
 
     //创造新的箭头
@@ -104,19 +91,8 @@ private:
     //处理击中箭头
     void handleHit(MyArrow *arrow);
 
-    //处理为击中箭头
+    //处理未击中箭头
     void handleMiss(MyArrow *arrow);
-
-
-
-
-
-
-
-
-
-
-
 
 };
 

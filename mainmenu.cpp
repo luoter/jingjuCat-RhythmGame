@@ -1,17 +1,14 @@
 #include "mainmenu.h"
 #include "ui_mainmenu.h"
-#include"QLabel"
-#include"QPainter"
-#include"QPixmap"
-#include"QPushButton"
-#include"levelselect.h"
-#include"surprise.h"
-#include"QTimer"
-#include"mypushbutton.h"
-#include"QMediaPlayer"
-#include"QAudioOutput"
+#include "QLabel"
+#include "QPainter"
+#include "QPixmap"
+#include "levelselect.h"
+#include "surprise.h"
+#include "QTimer"
+#include "mypushbutton.h"
 #include <QIcon>
-#include<QKeyEvent>
+#include <QKeyEvent>
 
 
 MainMenu::MainMenu(QWidget *parent)
@@ -34,8 +31,7 @@ MainMenu::MainMenu(QWidget *parent)
     this->setFocus();  // 获取焦点，为了获取按键事件
 
 
-    //开始按钮设置//需要更改
-
+    //开始按钮设置
     MyPushButton*startBtn=new MyPushButton(":/forzhuye/picture1/begin3.png");
     startBtn->setParent(this);
     startBtn->move(this->width()*0.7,this->height()*0.3);
@@ -45,43 +41,34 @@ MainMenu::MainMenu(QWidget *parent)
     setupMusicControls();
 
 
-
-
-
     //延时跳转选择关卡界面
     connect(startBtn, &MyPushButton::clicked, [=](){
 
         //要在点了按钮之后生成
         LevelSelect*levelselect=new LevelSelect;
 
-
-        bool m_isMusicMuted=isMusicMuted;
-
-        m_isMusicMuted=true;//设为静音
-        audioOutput->setMuted(m_isMusicMuted);
+        audioOutput->setMuted(true);
 
         this->setFocus();
+        this->hide();
+        QTimer::singleShot(500,this,[=](){
+
+            levelselect->show();
+
+        });
 
         //点击返回后操作
         connect(levelselect,&LevelSelect::levelSelectBack,this,[=](){
 
-        levelselect->hide();
+            levelselect->hide();
 
             QTimer::singleShot(500,this,[=](){
 
                 this->show();
 
-                //解除静音
+                //音乐播放状态恢复
                 audioOutput->setMuted(isMusicMuted);
             });
-
-        });
-
-        this->hide();
-
-        QTimer::singleShot(500,this,[=](){
-
-            levelselect->show();
 
         });
 
@@ -91,8 +78,6 @@ MainMenu::MainMenu(QWidget *parent)
 
 
 }
-
-//
 
 
 //主界面设置
@@ -106,16 +91,14 @@ void MainMenu::paintEvent(QPaintEvent*){
 //音乐控制
 void MainMenu::setupMusicControls()
 {
-
     audioOutput = new QAudioOutput(this);
 
     // 创建播放器
     bgmPlayer = new QMediaPlayer(this);
     bgmPlayer->setAudioOutput(audioOutput);
-    audioOutput->setVolume(30);  // 初始音量
-    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/yugan.mp3"));//音频
-
-
+    audioOutput->setVolume(30);  // 初始音量,但这个设置是一点用没有
+    bgmPlayer->setSource(QUrl("qrc:/sound/picture1/yugan.mp3"));
+    bgmPlayer->play();
 
     // 创建静音按钮
     muteBtn = new QPushButton(this);
@@ -123,7 +106,7 @@ void MainMenu::setupMusicControls()
     muteBtn->setFocusPolicy(Qt::NoFocus);
 
     // 设置按钮属性
-    muteBtn->setGeometry(20, 40, 40, 40);  // 左上角位置
+    muteBtn->setGeometry(20, 40, 40, 40);
     muteBtn->setIcon(QIcon(":/forzhuye/picture1/jingyin13.png"));
     muteBtn->setIconSize(QSize(42, 42));
 
@@ -136,8 +119,6 @@ void MainMenu::setupMusicControls()
             bgmPlayer->play();
         }
     });
-
-    bgmPlayer->play();
 
 }
 
@@ -164,10 +145,9 @@ MainMenu::~MainMenu()
     delete bgmPlayer;  // 父对象会自动删除，但显式释放更安全
 }
 
-void MainMenu::keyPressEvent(QKeyEvent*event){
-
- qDebug() << "Pressed key:" << event->key(); // 调试输出
-     //跳转彩蛋界面
+void MainMenu::keyPressEvent(QKeyEvent*event)
+{
+    //跳转彩蛋界面
     if(event->key()==Qt::Key_Up){
 
         Surprise*surprise=new Surprise();

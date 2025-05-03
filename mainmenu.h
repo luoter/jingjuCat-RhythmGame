@@ -17,7 +17,7 @@ class MainMenu : public QMainWindow
 {protected:
     Q_OBJECT
 
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*)override;
 
 public:
     MainMenu(QWidget *parent = nullptr);

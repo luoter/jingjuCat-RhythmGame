@@ -15,13 +15,9 @@ public:
     QString pressImgPath;
 
     //重写按钮按下和释放事件
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e)override;
+    void mouseReleaseEvent(QMouseEvent *e)override;
 
-
-signals:
-
-public slots:
 
 };
 

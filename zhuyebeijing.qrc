@@ -19,7 +19,6 @@
         <file>picture1/finish3.png</file>
     </qresource>
     <qresource prefix="/sound">
-        <file>picture1/shiyan.wav</file>
         <file>picture1/jingjumao.mp3</file>
         <file>picture1/piaodang.mp3</file>
         <file>picture1/xiaoyugan.mp3</file>

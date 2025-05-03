@@ -17,11 +17,10 @@ PlayScene::PlayScene(int levelnum)
     this->setWindowIcon(QPixmap(":/forzhuye/picture1/jingjulogo4.png"));
     this->levelIndex=levelnum;
 
-
-
     //设置初始大小
     this->setFixedSize(800,600);
-
+    //背景音乐有关
+    setBackMusic();
 
     //返回按钮
     MyPushButton*backBtn=new MyPushButton(":/forselect/picture1/back5.png");
@@ -47,9 +46,21 @@ PlayScene::PlayScene(int levelnum)
 
     }
 
+
+    // 统一定时器初始化
+    m_unifiedTimer = new QTimer(this);
+    m_unifiedTimer->start(16);//定时器，每0.16秒箭头移动
+    connect(m_unifiedTimer, &QTimer::timeout, this, &PlayScene::moveAllArrows);
+
+
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocus();  // 获取焦点
+
+
     //结束图片
     QLabel*finishLabel=new QLabel;
-    //防置阻碍鼠标事件
+
+    //阻碍鼠标事件
     finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     QPixmap finishPix;
     finishPix.load(":/forplayscene/picture1/finish3.png");
@@ -63,7 +74,7 @@ PlayScene::PlayScene(int levelnum)
     //结束后出现结束图片
     QPropertyAnimation*finish=new QPropertyAnimation(finishLabel,"geometry");
     //设置间隔
-    finish->setDuration(3000);
+    finish->setDuration(5000);
     //开始位置
     finish->setStartValue(QRect(finishLabel->x(),finishLabel->y(),finishLabel->width(),finishLabel->height()));
     //结束位置
@@ -72,61 +83,35 @@ PlayScene::PlayScene(int levelnum)
     finish->setEasingCurve(QEasingCurve::OutCubic);
 
 
-
-    // 统一定时器初始化
-    m_unifiedTimer = new QTimer(this);
-    connect(m_unifiedTimer, &QTimer::timeout, this, &PlayScene::moveAllArrows);
-
-    m_unifiedTimer->start(16);//定时器，每0.01秒箭头移动
-
-
-
-    this->setFocusPolicy(Qt::StrongFocus);
-    this->setFocus();  // 获取焦点
-
-
-
-    // 测试代码：每秒生成随机箭头
-    testTimer = new QTimer(this);
-    connect(testTimer, &QTimer::timeout, [=](){
-        srand(time(NULL));
-        // 随机生成方向和轨道
-        createArrow(rand()%4 );
-    });
-
-
-
-
     //进入关卡1
     if(levelIndex==1){
         //设置标题
         this->setWindowTitle("《京剧猫》，加油( ´ ▽ ` )ノ");
 
+        // 测试代码：每秒生成随机箭头
+        testTimer = new QTimer(this);
         testTimer->start(500);  // 间隔0.5秒
+        connect(testTimer, &QTimer::timeout, [=](){
 
-        //停止生成
+            // 随机生成方向和轨道
+            createArrow(rand()%4 );
+        });
+
+        //结算计时
         QTimer*jishi=new QTimer(this);
-        jishi->start(165000);
+        jishi->start(167000);
 
         connect(jishi,&QTimer::timeout,[=](){
 
-            stopTimer=new QTimer(this);
-            stopTimer->setSingleShot(true);
-            stopTimer->start();
-            connect(stopTimer,&QTimer::timeout,[=](){
-                testTimer->stop();
-                // m_unifiedTimer->stop();
-
-                qDebug()<<"停止生成箭头";
-
-            });
-
+            testTimer->stop();
             jishi->stop();
-
             //播放音效
             finishMusic();
 
-            QTimer::singleShot(3000,this,[=](){
+
+            stopTimer=new QTimer(this);
+            stopTimer->start(7000);
+            connect(stopTimer,&QTimer::timeout,[=](){
 
                 //结束动画
                 finish->start();
@@ -136,13 +121,11 @@ PlayScene::PlayScene(int levelnum)
                 connect(finish, &QPropertyAnimation::finished, [=]() {
                     m_isAnimationFinished = true;    // 标记动画完成
                     finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
-                    qDebug() << "动画结束，可点击返回";
-
+                    finish->stop();
                 });
 
-
+                stopTimer->stop();
             });
-
 
         });
 
@@ -153,45 +136,45 @@ PlayScene::PlayScene(int levelnum)
             //设置标题
             this->setWindowTitle("《飘荡》，你可以的┐(￣ヮ￣)┌");
 
+            // 测试代码：每秒生成随机箭头
+            testTimer = new QTimer(this);
             testTimer->start(600);  // 间隔0.6秒
+            connect(testTimer, &QTimer::timeout, [=](){
+
+                // 随机生成方向和轨道
+                createArrow(rand()%4 );
+            });
+
 
             //停止生成，不知道为什么duration 用不了，只能用定时器了
             QTimer*jishi=new QTimer(this);
-            jishi->start(135000);
+            jishi->start(137000);
 
             connect(jishi,&QTimer::timeout,[=](){
 
-                stopTimer=new QTimer(this);
-                stopTimer->setSingleShot(true);
-                stopTimer->start();
-                connect(stopTimer,&QTimer::timeout,[=](){
-                    testTimer->stop();
-                    // m_unifiedTimer->stop();
+            testTimer->stop();
+            jishi->stop();
+            //播放音效
+            finishMusic();
 
-                    qDebug()<<"停止生成箭头";
 
+            stopTimer=new QTimer(this);
+            stopTimer->start(7000);
+            connect(stopTimer,&QTimer::timeout,[=](){
+
+                //结束动画
+                finish->start();
+
+                this->setWindowTitle("加油加油加油！！！");
+
+                connect(finish, &QPropertyAnimation::finished, [=]() {
+                    m_isAnimationFinished = true;    // 标记动画完成
+                    finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
+                    finish->stop();
                 });
 
-                jishi->stop();
-
-                //播放音效
-                finishMusic();
-
-                QTimer::singleShot(3000,this,[=](){//延时出现
-
-                    //结束动画
-                    finish->start();
-                    this->setWindowTitle("加油加油加油！！！");
-
-
-                    connect(finish, &QPropertyAnimation::finished, [=]() {
-                        m_isAnimationFinished = true;    // 标记动画完成
-                        finishLabel->setAttribute(Qt::WA_TransparentForMouseEvents, false); // 允许点击穿透
-                        qDebug() << "动画结束，可点击返回";
-                        // finishPlayer->stop();
-                    });
-
-                });
+                stopTimer->stop();
+            });
 
             });
 
@@ -199,8 +182,7 @@ PlayScene::PlayScene(int levelnum)
 
 
 
-    //背景音乐有关
-    setBackMusic();
+
 
 
 }
@@ -249,14 +231,6 @@ void PlayScene::finishMusic(){
 
     finishPlayer->setSource(QUrl("qrc:/sound/picture1/kaichang.mp3"));
     finishOutput->setVolume(30);
-
-    //不用循环
-    // connect(finishPlayer, &QMediaPlayer::playbackStateChanged, [this](){
-    //     if(finishPlayer->playbackState() == QMediaPlayer::StoppedState) {
-    //         finishPlayer->play();
-    //     }
-    // });
-
     finishPlayer->play();
 }
 
@@ -266,10 +240,10 @@ PlayScene::~PlayScene() {
         testTimer->stop();
         delete testTimer;
     }
-    if(stopTimer) {
-        stopTimer->stop();
-        delete stopTimer;
-    }
+    // if(stopTimer) {
+    //     stopTimer->stop();
+    //     delete stopTimer;
+    // }
 }
 
 
@@ -284,14 +258,14 @@ void PlayScene::moveAllArrows()
         if (arrow->isActive() && arrow->y() > m_judgelineY +1) {
 
             arrow->deactivate();
-            m_score-=300;
+
 
         }
 
 
     }
 
-    // 自动清理无效指针？？
+    // 自动清理无效指针
     m_activeArrows.erase(
         std::remove_if(m_activeArrows.begin(), m_activeArrows.end(),
         [](MyArrow* arrow) { return !arrow || !arrow->isVisible(); }),
@@ -314,7 +288,8 @@ void PlayScene::createArrow(int track)
 
     // 连接信号
     connect(arrow, &MyArrow::arrowMissed, [=](){
-        qDebug() << "Missed"<<dir<<" arrow at track:" << track;
+        arrow->deactivate();
+        qDebug() << "Missed"<<dir;
     });
 
     // 窗口退出，移除所有箭头
@@ -322,14 +297,12 @@ void PlayScene::createArrow(int track)
         m_activeArrows.removeAll(arrow);
     });
 
-
-
     m_activeArrows.append(arrow);//生成的箭头加入列表
 
 }
 
-// 键盘事件处理
-    void PlayScene::keyPressEvent(QKeyEvent *event)
+//键盘事件处理
+void PlayScene::keyPressEvent(QKeyEvent *event)
 {
 
     if(!keyTrackMap.contains(event->key())) return;
@@ -338,8 +311,6 @@ void PlayScene::createArrow(int track)
 
     checkCollision(track);
 }
-
-
 
 //碰撞检测，判定是否成功点击按键
 void PlayScene::checkCollision(int track)
@@ -359,15 +330,10 @@ void PlayScene::checkCollision(int track)
             hit = true;
             break; // 每个按键只命中一个箭头
         }
-
-
     }
 
-    if(!hit) handleMiss(m_activeArrows[0]);
-
-
+    if(!hit) handleMiss(m_activeArrows[0]);//保证只与最近箭头匹配
 }
-
 
 //命中
 void PlayScene::handleHit(MyArrow *arrow)
@@ -377,45 +343,23 @@ void PlayScene::handleHit(MyArrow *arrow)
     arrow->hide();
 
     arrow->deleteLater();
-
-    m_score += 100;
-
-    qDebug() << "Perfect hit! Current score:" << m_score;
 }
 
 // 未命中
 void PlayScene::handleMiss(MyArrow *arrow)
 {
-    m_score = qMax(0, m_score - 200);
-    // countFail++;
-
     if(arrow->y()<m_judgelineY){
-
         arrow->setFailed();
-
         arrow->deactivate();
-
         m_activeArrows.removeAll(arrow);
-
         QTimer::singleShot(2000,this,[=](){
-
             arrow->hide();
-
             arrow->deleteLater();
-
         });
-
-
-        qDebug() << "Miss! Current score:" << m_score;
-
     }
-
-
-
 }
 
-
-//测试箭头实现
+//箭头随机生成
 void PlayScene::createTestPattern()
 {
     srand(time(nullptr));
